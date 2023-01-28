@@ -139,7 +139,6 @@ class LightSAGE(GeneralRecommender):
         ssl_loss = self.ssl_layer_loss(
             context_embedding, center_embedding, user, pos_item
         )
-        # proto_loss = self.ProtoNCE_loss(center_embedding, user, pos_item)
 
         init_users_emb = self.embedding_user(user)
         init_pos_emb = self.embedding_item(pos_item)
