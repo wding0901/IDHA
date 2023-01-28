@@ -77,37 +77,6 @@ def run(args):
     logger.info('test result: {}'.format(test_result))
 
 
-def test(args):
-    model_class = get_model(args.model)
-    # configurations initialization
-    config = Config(model=model_class, dataset=args.dataset, config_file_list=args.config_file_list)
-    init_seed(config['seed'], config['reproducibility'])
-
-    # logger initialization
-    init_logger(config)
-    logger = getLogger()
-
-    logger.info(config)
-
-    # dataset filtering
-    dataset = create_dataset(config)
-    logger.info(dataset)
-
-    # dataset splitting
-    train_data, valid_data, test_data = data_preparation(config, dataset)
-    print(train_data.dataset.num(config["USER_ID_FIELD"]))
-    print(valid_data.dataset.num(config["USER_ID_FIELD"]))
-    print(test_data.dataset.num(config["USER_ID_FIELD"]))
-
-    inter = dataset.inter_matrix(form='coo').astype(np.float32)
-    print(inter)
-    inter = inter.tolil()
-    train_size = train_data.dataset.num(config["USER_ID_FIELD"])
-    random_row = np.random.choice(train_size, size=(train_size // 5))
-    inter[random_row, :] = 0
-    print(inter.tocoo())
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, default='gowalla',
